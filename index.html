@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Name Generator</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+		<style type="text/css">
+			h1 {
+				text-align: center;	
+				font-size: 40px;
+			}
+			#list {
+				width: 80%;
+				max-width: 500px;
+			}
+			button {
+		        cursor:pointer;
+		        background-color: rgb(173,216,230);
+		        border: 1px solid black;
+		        color: black;
+		        padding: 5px 12px;
+		        text-align: center;
+		        text-decoration: none;
+		        margin-bottom: 10px;
+		        font-size: 20px; 
+		    }
+		    img {
+		    	width: 100%;
+		    }
+		</style>
+	</head>
+	<body>
+		<h1><span id="name">??????</span><h1>
+		<button type="button" id="clicker">GET A RANDOM NAME</button>
+		<br/>
+		<img src="pointer.jpg"/>
+		<select id="subjects">
+			<option value="maths" selected>Maths</option>
+			<option value="english">English</option>
+			<option value="all">All</option>
+		</select><br>
+		<input type="text" name="Names" id="list" value=""><br>
+		<script>
+			var names;
+
+			function getRandomInt(min, max) {
+			    return Math.floor(Math.random() * (max - min + 1)) + min;
+			}
+
+			function pickName(subject){
+				return names[subject][getRandomInt(0, names[subject].length - 1)]
+			}
+
+			$('#clicker').on('click', function (event) {
+                    event.preventDefault();
+                    var raw_names = $("#list").val();
+                    if (raw_names.length != 0 && 	
+                    	raw_names.match("=") == null &&
+                    	raw_names.match("\\.") == null &&
+                    	raw_names.match(";") == null) {
+	                    	names = $.parseJSON(raw_names);
+	                    	$("#name").html(pickName($("#subjects").val()));
+                    } else {
+                    	alert("Enter valid input");
+                    }
+            });
+	</script>
+
+	</body>
+</html>
