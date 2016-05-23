@@ -10,9 +10,19 @@
 				text-align: center;	
 				font-size: 40px;
 			}
-			#list {
+
+			p {
+				text-align: left;
+				padding-left: 10%;
+			}
+
+			p, #subjects {
+				font-size: 20px;
+			}
+			.Names {
 				width: 80%;
-				max-width: 500px;
+				border: 1px solid;
+				font-size: 14px;
 			}
 			button {
 		        cursor:pointer;
@@ -27,7 +37,7 @@
 		    }
 		    img {
 		    	width: 100%;
-		    	max-width:500px;
+		    	max-width: 500px;
 		    }
 		</style>
 	</head>
@@ -41,9 +51,16 @@
 			<option value="english">English</option>
 			<option value="all">All</option>
 		</select><br>
-		<input type="text" name="Names" id="list" value=""><br>
+		<div>
+			<p>Maths Names:</p>
+			<input type="text" class="Names" id="Maths" placeholder="Type names separated by commas" value="">
+			<p>English Names:</p>
+			<input type="text" class="Names" id="English" placeholder="Type names separated by commas" value="">
+			<p>All Names:</p>
+			<input type="text" class="Names" id="All" placeholder="Type names separated by commas" value="">
+		</div>
 		<script>
-			var names;
+			var names = {"maths": [], "english": [], "all": []};
 
 			function getRandomInt(min, max) {
 			    return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -53,18 +70,35 @@
 				return names[subject][getRandomInt(0, names[subject].length - 1)]
 			}
 
+			function processArray(raw) {
+				var single = "";
+				var array_to_push = [];
+
+				for (var i = 0; i <= raw.length; i++) {
+					if (raw[i] == "," | i == raw.length) {
+						array_to_push.push(single);
+					} else if (raw[i] == " ") {
+						single = "";
+					} else {
+						single = single + raw[i];
+					}
+				}
+
+				return array_to_push;
+			}
+
 			$('#clicker').on('click', function (event) {
                     event.preventDefault();
-                    var raw_names = $("#list").val();
-                    if (raw_names.length != 0 && 	
-                    	raw_names.match("=") == null &&
-                    	raw_names.match("\\.") == null &&
-                    	raw_names.match(";") == null) {
-	                    	names = $.parseJSON(raw_names);
-	                    	$("#name").html(pickName($("#subjects").val()));
-                    } else {
-                    	alert("Enter valid input");
-                    }
+                    var maths_names = $("#Maths").val();
+                    var english_names = $("#English").val();
+                    var all_names = $("#All").val();
+
+	                names.maths = processArray(maths_names);
+	                names.english = processArray(english_names);
+	                names.all = processArray(all_names);
+
+	                $("#name").html(pickName($("#subjects").val()));
+
             });
 	</script>
 
